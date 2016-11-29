@@ -16,7 +16,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
     private GoogleMap mMap;
-    private Marker mSydney;
+    private Marker mBoston;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,18 +40,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        //mMap.setMyLocationEnabled(true);
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mSydney = mMap.addMarker(new MarkerOptions()
-                .position(sydney)
-                .title("Marker in Sydney")
+        LatLng boston = new LatLng(42.3601, -71.0589);
+        mBoston = mMap.addMarker(new MarkerOptions()
+                .position(boston)
+                .title("Marker in Boston")
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
-        mSydney.setTag(0);
+        mBoston.setTag(0);
         mMap.setOnMarkerClickListener(this);
 
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(boston));
     }
 
     /** Called when the user clicks a marker. */
