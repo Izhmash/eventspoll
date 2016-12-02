@@ -1,4 +1,10 @@
 <resources>
-    <string name="app_name">EventsPoll</string>
-    <string name="welcome">Welcome to EventsPoll!</string>
+    <string name="app_name">Event Poll</string>
+    <string name="Create_app">Create your own event!</string>
+    <string name="NameOfEvent">Name of the Event</string>
+    <string name="Description">Description</string>
+    <string name="Datetime">Date and Time</string>
+    <string name="pick_time">Pick a Time</string>
+    <string name="pick_date">Pick a Date</string>
+
 </resources>
