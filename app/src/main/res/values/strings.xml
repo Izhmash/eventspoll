@@ -9,4 +9,6 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+    <string name="submit_an_event_here">Submit an event here!</string>
+    <string name="HomeScreenText">EC327: Final Project - EventsPoll \nBy Ian Ballou, Lina Lin Wei, Dylan Santos, and Huzefa Mandviwala. \nYour handy solution to finding events on campus! \nTap the menu icon in the top left to get started.</string>
 </resources>
