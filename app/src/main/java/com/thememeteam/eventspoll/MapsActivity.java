@@ -23,13 +23,11 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    private GoogleApiClient client;
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
     //https://www.simplifiedcoding.net/android-mysql-tutorial-to-perform-basic-crud-operation/
 
@@ -41,9 +39,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
@@ -85,16 +80,54 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
         // Add a marker in Boston and move the camera
-        LatLng boston = new LatLng(42.3601, -71.0589);
-        Marker mBoston = googleMap.addMarker(new MarkerOptions()
+        //LatLng boston = new LatLng(42.3601, -71.0589);
+        /*Marker mBoston = googleMap.addMarker(new MarkerOptions()
                 .position(boston)
                 .title("Marker in Boston")
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
                 .snippet("This marker is blue!"));
-        mBoston.setTag(0);
+        mBoston.setTag(0);*/
         googleMap.setOnMarkerClickListener(this);
 
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(boston));
+        //googleMap.moveCamera(CameraUpdateFactory.newLatLng(boston));
+
+        String lines[];
+        String title;
+        String type;
+        String time;
+        String date;
+        double lat;
+        double lng;
+        //Marker events[];
+
+        for (int i = 1; i < 5; i++) {
+            lines = getEventStr(i).split("\r\n");
+
+            if (i > 1) {
+                title = lines[1];
+                type = lines[2];
+                time = lines[3];
+                date = lines[4];
+                lat = Double.parseDouble(lines[5]);
+                lng = Double.parseDouble(lines[6]);
+            }
+            else {
+                title = lines[0];
+                type = lines[1];
+                time = lines[2];
+                date = lines[3];
+                lat = Double.parseDouble(lines[4]);
+                lng = Double.parseDouble(lines[5]);
+            }
+            LatLng tempLatLng = new LatLng(lat, lng);
+            Marker tempMark = googleMap.addMarker(new MarkerOptions()
+                    .position(tempLatLng)
+                    .title(type)
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+                    .snippet(title + ": " + time + " on " + date));
+            tempMark.setTag(lines); // Each marker carries it's desciptors*/
+        }
+
     }
 
     /**
@@ -103,18 +136,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public boolean onMarkerClick(final Marker marker) {
 
-        // Retrieve the data from the marker.
-        Integer clickCount = (Integer) marker.getTag();
 
-        // Check if a click count was set, then display the click count.
-        if (clickCount != null) {
-            clickCount = clickCount + 1;
-            marker.setTag(clickCount);
-            Toast.makeText(this,
-                    marker.getTitle() +
-                            " has been clicked " + clickCount + " times.",
-                    Toast.LENGTH_SHORT).show();
-        }
+
+        Toast.makeText(this,
+                marker.getTitle(),
+                Toast.LENGTH_SHORT).show();
+
 
         // Return false to indicate that we have not consumed the event and that we wish
         // for the default behavior to occur (which is for the camera to move such that the
@@ -122,39 +149,59 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return false;
     }
 
+    int getNumEvents() {
+        InputStream inputStream = getResources().openRawResource(R.raw.events);
+        //System.out.println(inputStream);
+
+        int i;
+        int num = 0;
+        try {
+            i = inputStream.read();
+            while (i != -1) {
+                i = inputStream.read();
+                if (i == '#') {
+                    num++;
+                }
+            }
+            inputStream.close();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return num;
+    }
+
     /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     * Returns the event info for a given id
      */
-    public Action getIndexApiAction() {
-        Thing object = new Thing.Builder()
-                .setName("Maps Page") // TODO: Define a title for the content shown.
-                // TODO: Make sure this auto-generated URL is correct.
-                .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
-                .build();
-        return new Action.Builder(Action.TYPE_VIEW)
-                .setObject(object)
-                .setActionStatus(Action.STATUS_TYPE_COMPLETED)
-                .build();
-    }
+    private String getEventStr(int id) {
 
-    @Override
-    public void onStart() {
-        super.onStart();
+        InputStream inputStream = getResources().openRawResource(R.raw.events);
+        System.out.println(inputStream);
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client.connect();
-        AppIndex.AppIndexApi.start(client, getIndexApiAction());
-    }
+        int i;
+        try {
+            i = inputStream.read();
+            while (i != -1) {
+                byteArrayOutputStream.write(i);
+                i = inputStream.read();
+                if (i == '#') {
+                    i = inputStream.read();
+                    if (Character.getNumericValue(i) == id) {
+                        break;
+                    } else {
+                        byteArrayOutputStream.reset();
+                        i = inputStream.read();
+                    }
+                }
+            }
+            inputStream.close();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        AppIndex.AppIndexApi.end(client, getIndexApiAction());
-        client.disconnect();
+        return byteArrayOutputStream.toString();
     }
 }

@@ -1,24 +1,13 @@
 package com.thememeteam.eventspoll;
 
 import android.content.Intent;
-import android.content.res.AssetManager;
-import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
-
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.appindexing.Thing;
-import com.google.android.gms.common.api.GoogleApiClient;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
@@ -32,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
     private Vector<String> wordss;
     int j=0;
     private StringTokenizer tokenizer;
-    String[] eventList = new String[params]; //array holds event data
+    //String[] eventList = new String[params]; //array holds event data
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,14 +30,38 @@ public class MainActivity extends AppCompatActivity {
 
         wordss = new Vector<String>();
 
-
+        String lines[] = getEventStr(2).split("\r\n");
         TextView testText = (TextView) findViewById(R.id.text_test);
-        testText.setText(readTxt(eventList));
+        testText.setText(lines[0]);
 
     }
 
+    /*int getNumEvents() {
+        InputStream inputStream = getResources().openRawResource(R.raw.events);
+        //System.out.println(inputStream);
 
-    private String readTxt(String[] events){
+        int i;
+        int num = 0;
+        try {
+            i = inputStream.read();
+            while (i != -1) {
+                i = inputStream.read();
+                if (i == '#') {
+                    num++;
+                }
+            }
+            inputStream.close();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return num;
+    }*/
+
+    /**
+     * Returns the event info for a given id
+     */
+    private String getEventStr(int id) {
 
         InputStream inputStream = getResources().openRawResource(R.raw.events);
         System.out.println(inputStream);
@@ -57,12 +70,17 @@ public class MainActivity extends AppCompatActivity {
         int i;
         try {
             i = inputStream.read();
-            while (i != -1)
-            {
+            while (i != -1) {
                 byteArrayOutputStream.write(i);
                 i = inputStream.read();
                 if (i == '#') {
-                    break;
+                    i = inputStream.read();
+                    if (Character.getNumericValue(i) == id) {
+                        break;
+                    } else {
+                        byteArrayOutputStream.reset();
+                        i = inputStream.read();
+                    }
                 }
             }
             inputStream.close();
@@ -73,8 +91,6 @@ public class MainActivity extends AppCompatActivity {
 
         return byteArrayOutputStream.toString();
     }
-
-
     public void openMaps(View view) {
         Intent intent = new Intent(this, MapsActivity.class);
         startActivity(intent);
