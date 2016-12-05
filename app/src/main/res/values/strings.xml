@@ -1,4 +1,12 @@
 <resources>
     <string name="app_name">EventsPoll</string>
     <string name="welcome">Welcome to EventsPoll!</string>
+    <string name="entryfield">Enter something here!</string>
+    <string name="ButtonText">Click me!</string>
+    <string name="title_activity_side_menu">SideMenu</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
 </resources>
