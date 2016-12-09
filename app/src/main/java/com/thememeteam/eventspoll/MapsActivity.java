@@ -38,7 +38,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()  //crash
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
+        getNumEvents();
     }
 
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
@@ -132,7 +132,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         // Read events from text file
         // i < (numEvents + 1)
-        for (int i = 1; i < 5; i++) {
+        Toast.makeText(this, Integer.toString(getNumEvents()) + " events", Toast.LENGTH_LONG).show();
+        for (int i = 1; i < /*5*/getNumEvents() + 1; i++) {
             lines = getEventStr(i).split("\r\n");
 
             if (i > 1) {
