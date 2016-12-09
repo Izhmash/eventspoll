@@ -31,7 +31,7 @@ import static com.thememeteam.eventspot.R.layout.content_main;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    String FILENAME = "events_file";
+    /*String FILENAME = "events_file";
     String string = "Party at Joe's house\n" +
             "Party\n" +
             "21:00\n" +
@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity
             "2017/1/30\n" +
             "44.4762466\n" +
             "-73.2103198\n" +
-            "#5";
+            "#5";*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         /*Testing file io*/
-        int i;
+        /*int i;
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         FileOutputStream fos = null;
         try {
@@ -114,7 +114,7 @@ public class MainActivity extends AppCompatActivity
 
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
 
     }
 
@@ -154,7 +154,7 @@ public class MainActivity extends AppCompatActivity
                     .commit();
         }
         else if (id == R.id.nav_create_event) {
-            Intent intent = new Intent(this,eventspoll.class);
+            Intent intent = new Intent(this,eventspot.class);
             startActivity(intent);
             fragmentManager.beginTransaction()
                     .replace(R.id.content_frame, new CreateEventFragment())
@@ -177,7 +177,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void openMenu(View view){
-        Intent intent = new Intent(this, eventspoll.class);
+        Intent intent = new Intent(this, eventspot.class);
         startActivity(intent);
     }
 }
