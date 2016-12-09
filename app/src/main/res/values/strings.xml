@@ -6,6 +6,13 @@
     <string name="Datetime">Date and Time</string>
     <string name="pick_time">Pick a Time</string>
     <string name="pick_date">Pick a Date</string>
+    <string name="button2">Party</string>
+    <string name="button3">Concert</string>
+    <string name="button4">Sports</string>
+    <string name="button5">Seminar</string>
+    <string name="EventType">Type of Event</string>
     <string name="button">Button</string>
+    <string name="address">Address</string>
+    <string name="button1">ok</string>
 
 </resources>

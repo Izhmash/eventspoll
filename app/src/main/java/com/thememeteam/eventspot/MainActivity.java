@@ -1,4 +1,4 @@
-package com.thememeteam.eventspoll;
+package com.thememeteam.eventspot;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -14,7 +14,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void openMenu(View view){
-        Intent intent = new Intent(this,eventspoll.class);
+        Intent intent = new Intent(this,eventspot.class);
         startActivity(intent);
     }
 }

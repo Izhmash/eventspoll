@@ -1,4 +1,4 @@
-package com.thememeteam.eventspoll;
+package com.thememeteam.eventspot;
 
 import org.junit.Test;
 
