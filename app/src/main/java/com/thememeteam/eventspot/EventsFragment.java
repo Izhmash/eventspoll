@@ -1,4 +1,4 @@
-package com.thememeteam.eventspoll;
+package com.thememeteam.eventspot;
 
 import android.app.Fragment;
 import android.os.Bundle;

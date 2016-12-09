@@ -1,4 +1,4 @@
-package com.thememeteam.eventspoll;
+package com.thememeteam.eventspot;
 
 import android.app.FragmentManager;
 import android.os.Bundle;
@@ -26,7 +26,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import static com.thememeteam.eventspoll.R.layout.content_main;
+import static com.thememeteam.eventspot.R.layout.content_main;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -68,13 +68,10 @@ public class MainActivity extends AppCompatActivity
             "-73.2103198\n" +
             "#5";
 
-    TextView textView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        textView = (TextView)findViewById(R.id.themeBtnText);
 
         //initialize view to my events
         FragmentManager fragmentManager = getFragmentManager();
@@ -157,6 +154,8 @@ public class MainActivity extends AppCompatActivity
                     .commit();
         }
         else if (id == R.id.nav_create_event) {
+            Intent intent = new Intent(this,eventspoll.class);
+            startActivity(intent);
             fragmentManager.beginTransaction()
                     .replace(R.id.content_frame, new CreateEventFragment())
                     .commit();
@@ -172,23 +171,13 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-
-    public void changeTheme(View view){
-        boolean checked = ((ToggleButton)view).isChecked();
-
-        if(checked)
-        {
-            textView.setText("On");
-            textView.setVisibility(View.VISIBLE);
-        }
-        else
-        {
-            textView.setText("Off");
-            textView.setVisibility(View.VISIBLE);
-        }
-    }
     public void openMaps(View view) {
         Intent intent = new Intent(this, MapsActivity.class);
+        startActivity(intent);
+    }
+
+    public void openMenu(View view){
+        Intent intent = new Intent(this, eventspoll.class);
         startActivity(intent);
     }
 }

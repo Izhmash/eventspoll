@@ -1,4 +1,4 @@
-package com.thememeteam.eventspoll;
+package com.thememeteam.eventspot;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
