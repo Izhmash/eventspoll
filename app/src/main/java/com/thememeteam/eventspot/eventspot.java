@@ -54,6 +54,8 @@ public class eventspot extends AppCompatActivity {
     static int mois = 0;
     static int jour = 0;
     static String type = "";
+
+    EditText eventName;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -70,12 +72,9 @@ public class eventspot extends AppCompatActivity {
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
 
-        //editText = (EditText) findViewById(R.id.editText);
-        //editText1 = (EditText) findViewById(R.id.editText2);
-        //editText2 = (EditText) findViewById(R.id.editText4);
 
-        //save = (Button) findViewById(R.id.button3);
-        //load = (Button) findViewById(R.id.button3);
+        eventName =  (EditText) findViewById(R.id.editText);
+
 
     }
 
@@ -164,8 +163,9 @@ public class eventspot extends AppCompatActivity {
 
         public void onDateSet(DatePicker view, int year, int month, int day) {
             annee = year;
-            mois = month;
+            mois = month + 1;
             jour = day;
+
         }
     }
 
@@ -209,40 +209,106 @@ public class eventspot extends AppCompatActivity {
 
             latitude= addresses.get(0).getLatitude();
             longitude= addresses.get(0).getLongitude();
-            Toast.makeText(this,Double.toString(latitude) , Toast.LENGTH_SHORT).show();
-            Toast.makeText(this,Double.toString(longitude) , Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this,Double.toString(latitude) , Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this,Double.toString(longitude) , Toast.LENGTH_SHORT).show();
             Toast.makeText(this,"Event Created!" , Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,Integer.toString(hour) , Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,Integer.toString(min) , Toast.LENGTH_SHORT).show();
 
         }
 
         int i;
         FileOutputStream fos = openFileOutput(FILENAME, this.MODE_PRIVATE);
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        fos.write(R.id.editText + '\n');
+        fos.write((eventName.getText().toString() + '\n').getBytes());
 
         fos.write(type.getBytes());
 
-        fos.write (hour);
+        fos.write ((Integer.toString(hour)).getBytes());
         fos.write (':');
-        fos.write (min + '\n');
+        fos.write ((Integer.toString(min) + '\n').getBytes());
 
-        fos.write (annee);
+        fos.write ((Integer.toString(annee)).getBytes());
         fos.write ('/');
-        fos.write (mois);
+        fos.write ((Integer.toString(mois)).getBytes());
         fos.write ('/');
-        fos.write (jour + '\n');
+        fos.write ((Integer.toString(jour) + '\n').getBytes());
 
         fos.write(Double.toString(latitude).getBytes());
         fos.write('\n');
         fos.write(Double.toString(longitude).getBytes());
         fos.write('\n');
         fos.write((Integer.toString(getNumEvents()) + '\n').getBytes() );
+
+        // start testing as per IanB
+        ByteArrayOutputStream byteArrayOutputStream2 = new ByteArrayOutputStream();
+        try {
+            FileInputStream fis = openFileInput(FILENAME);
+            int j = fis.read();
+            byteArrayOutputStream2.write(j);
+            Toast.makeText(this,
+                    byteArrayOutputStream2.toString(),
+                    Toast.LENGTH_LONG).show();
+            fis.close();
+            Toast.makeText(this,
+                    getEventStr(1),
+                    Toast.LENGTH_LONG).show();
+            /*Toast.makeText(this,
+                    getEventStr(2),
+                    Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,
+                    getEventStr(3),
+                    Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,
+                    getEventStr(4),
+                    Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,
+                    getEventStr(5),
+                    Toast.LENGTH_SHORT).show();*/
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
     private void hideSoftKeyboard(View v) {
         InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+    }
+
+    /**
+     * Returns the event info for a given id
+     */
+    private String getEventStr(int id) throws FileNotFoundException {
+
+        //InputStream inputStream = getResources().openRawResource(R.raw.events);
+        FileInputStream inputStream = openFileInput(FILENAME);
+        System.out.println(inputStream);
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+
+        int i;
+        try {
+            i = inputStream.read();
+            while (i != -1) {
+                byteArrayOutputStream.write(i);
+                i = inputStream.read();
+                if (i == '#') {
+                    i = inputStream.read();
+                    if (Character.getNumericValue(i) == id) {
+                        break;
+                    } else {
+                        byteArrayOutputStream.reset();
+                        i = inputStream.read();
+                    }
+                }
+            }
+            inputStream.close();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        return byteArrayOutputStream.toString();
     }
 
     int getNumEvents() throws FileNotFoundException {
