@@ -32,7 +32,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     //https://www.simplifiedcoding.net/android-mysql-tutorial-to-perform-basic-crud-operation/
 
-    String FILENAME = "hello_file";
+    String FILENAME = "events_file";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

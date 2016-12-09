@@ -31,7 +31,7 @@ import static com.thememeteam.eventspoll.R.layout.content_main;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    String FILENAME = "hello_file";
+    String FILENAME = "events_file";
     String string = "Party at Joe's house\n" +
             "Party\n" +
             "21:00\n" +
