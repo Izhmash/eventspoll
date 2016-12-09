@@ -1,100 +1,125 @@
 package com.thememeteam.eventspoll;
 
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+import android.app.FragmentManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.app.Activity;
+import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.view.View;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.TextView;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.StringTokenizer;
-import java.util.Vector;
+import android.widget.ToggleButton;
 
-public class MainActivity extends AppCompatActivity {
+import static com.thememeteam.eventspoll.R.layout.content_main;
 
-    final int params = 5;
+public class MainActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener {
 
-    String labels="caption";
-    String text="";
-    String[] s;
-    private Vector<String> wordss;
-    int j=0;
-    private StringTokenizer tokenizer;
-    //String[] eventList = new String[params]; //array holds event data
-
+    TextView textView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        wordss = new Vector<String>();
+        textView = (TextView)findViewById(R.id.themeBtnText);
 
-        String lines[] = getEventStr(2).split("\r\n");
-        TextView testText = (TextView) findViewById(R.id.text_test);
-        testText.setText(lines[0]);
+        //initialize view to my events
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.content_frame, new EventsFragment())
+                .commit();
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
     }
 
-    /*int getNumEvents() {
-        InputStream inputStream = getResources().openRawResource(R.raw.events);
-        //System.out.println(inputStream);
-
-        int i;
-        int num = 0;
-        try {
-            i = inputStream.read();
-            while (i != -1) {
-                i = inputStream.read();
-                if (i == '#') {
-                    num++;
-                }
-            }
-            inputStream.close();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
         }
-        return num;
-    }*/
+    }
 
-    /**
-     * Returns the event info for a given id
-     */
-    private String getEventStr(int id) {
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
 
-        InputStream inputStream = getResources().openRawResource(R.raw.events);
-        System.out.println(inputStream);
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+        FragmentManager fragmentManager = getFragmentManager();
 
-        int i;
-        try {
-            i = inputStream.read();
-            while (i != -1) {
-                byteArrayOutputStream.write(i);
-                i = inputStream.read();
-                if (i == '#') {
-                    i = inputStream.read();
-                    if (Character.getNumericValue(i) == id) {
-                        break;
-                    } else {
-                        byteArrayOutputStream.reset();
-                        i = inputStream.read();
-                    }
-                }
-            }
-            inputStream.close();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+
+        if (id == R.id.nav_my_events) {
+            fragmentManager.beginTransaction()
+                    .replace(R.id.content_frame, new EventsFragment())
+                    .commit();
+        }
+        else if (id == R.id.nav_map) {
+            fragmentManager.beginTransaction()
+                    .replace(R.id.content_frame, new MapFragment())
+                    .commit();
+        }
+        else if (id == R.id.nav_create_event) {
+            fragmentManager.beginTransaction()
+                    .replace(R.id.content_frame, new CreateEventFragment())
+                    .commit();
+        }
+        else if (id == R.id.nav_settings) {
+            fragmentManager.beginTransaction()
+                    .replace(R.id.content_frame, new SettingsFragment())
+                    .commit();
         }
 
-        return byteArrayOutputStream.toString();
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+
+    public void changeTheme(View view){
+        boolean checked = ((ToggleButton)view).isChecked();
+
+        if(checked)
+        {
+            textView.setText("On");
+            textView.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            textView.setText("Off");
+            textView.setVisibility(View.VISIBLE);
+        }
     }
     public void openMaps(View view) {
         Intent intent = new Intent(this, MapsActivity.class);
         startActivity(intent);
     }
-
-
 }
+

@@ -1,7 +1,37 @@
 <resources>
     <string name="app_name">EventsPoll</string>
     <string name="welcome">Welcome to EventsPoll!</string>
+    <string name="entryfield">Enter something here!</string>
+    <string name="ButtonText">Click me!</string>
+    <string name="title_activity_side_menu">SideMenu</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="submit_an_event_here">Submit an event here!</string>
+    <string name="HomeScreenText">EC327: Final Project - EventsPoll \nBy Ian Ballou, Lina Lin Wei, Dylan Santos, and Huzefa Mandviwala. \nYour handy solution to finding events on campus! \nTap the menu icon in the top left to get started.</string>
+
     <string name="to_map">Map</string>
     <string name="title_activity_maps">Map</string>
+        <!--
+        TODO: Before you run your application, you need a Google Maps API key.
+
+        To get one, follow this link, follow the directions and press "Create" at the end:
+
+        https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend&keyType=CLIENT_SIDE_ANDROID&r=FE:8D:B0:5A:5A:D5:FD:50:C6:DC:0F:9C:73:A5:19:4D:87:67:3F:98%3Bcom.thememeteam.eventspoll
+
+        You can also add your credentials to an existing key, using this line:
+        FE:8D:B0:5A:5A:D5:FD:50:C6:DC:0F:9C:73:A5:19:4D:87:67:3F:98;com.thememeteam.eventspoll
+
+        Alternatively, follow the directions here:
+        https://developers.google.com/maps/documentation/android/start#get-key
+
+        Once you have your key (it starts with "AIza"), replace the "google_maps_key"
+        string in this file.
+        -->
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">
+         AIzaSyA66uUj3Dk9xTqIAeyxi1uggbRbBvhwVoM
+    </string>
 
 </resources>

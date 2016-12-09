@@ -2,19 +2,18 @@ package com.thememeteam.eventspoll;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
-import android.net.Uri;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
-import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.widget.Toast;
 
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.appindexing.Thing;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -36,9 +35,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()  //crash
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
     }
 
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
@@ -71,6 +71,36 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
+        /*BitmapFactory.Options opts = new BitmapFactory.Options();
+        opts.inSampleSize = 4;
+        Bitmap newBitmap = BitmapFactory.decodeFile(R.drawable.books_48, opts);*/
+
+        Bitmap.Config conf = Bitmap.Config.ARGB_8888;
+        Bitmap bmpBook = Bitmap.createBitmap(170, 170, conf);
+        Bitmap bmpHat = Bitmap.createBitmap(170, 170, conf);
+        Bitmap bmpGuit = Bitmap.createBitmap(170, 170, conf);
+        Bitmap bmpHock = Bitmap.createBitmap(170, 170, conf);
+
+        Canvas canvasBook = new Canvas(bmpBook);
+        Canvas canvasHat = new Canvas(bmpHat);
+        Canvas canvasGuit = new Canvas(bmpGuit);
+        Canvas canvasHock = new Canvas(bmpHock);
+
+// paint defines the text color, stroke width and size
+        Paint color = new Paint();
+        color.setTextSize(35);
+        color.setColor(Color.BLACK);
+
+// modify canvas
+        canvasBook.drawBitmap(BitmapFactory.decodeResource(getResources(),
+                R.drawable.books_48), 0,0, color);
+        canvasHat.drawBitmap(BitmapFactory.decodeResource(getResources(),
+                R.drawable.party_hat_48), 0,0, color);
+        canvasGuit.drawBitmap(BitmapFactory.decodeResource(getResources(),
+                R.drawable.rock_music_filled_50), 0,0, color);
+        canvasHock.drawBitmap(BitmapFactory.decodeResource(getResources(),
+                R.drawable.hockey_48), 0,0, color);
+
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             googleMap.setMyLocationEnabled(true);
@@ -100,6 +130,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         double lng;
         //Marker events[];
 
+        // Read events from text file
+        // i < (numEvents + 1)
         for (int i = 1; i < 5; i++) {
             lines = getEventStr(i).split("\r\n");
 
@@ -120,12 +152,47 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 lng = Double.parseDouble(lines[5]);
             }
             LatLng tempLatLng = new LatLng(lat, lng);
-            Marker tempMark = googleMap.addMarker(new MarkerOptions()
-                    .position(tempLatLng)
-                    .title(type)
-                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
-                    .snippet(title + ": " + time + " on " + date));
-            tempMark.setTag(lines); // Each marker carries it's desciptors*/
+
+            if (type.equals("Seminar")) {
+                Marker tempMark = googleMap.addMarker(new MarkerOptions()
+                        .position(tempLatLng)
+                        .title(type)
+                        //.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+                        .icon(BitmapDescriptorFactory.fromBitmap(bmpBook))
+                        .snippet(title + ": " + time + " on " + date)
+                        .anchor(0.5f, 1));
+                tempMark.setTag(lines); // Each marker carries it's descriptors*/
+            }
+            else if (type.equals("Concert")) {
+                Marker tempMark = googleMap.addMarker(new MarkerOptions()
+                        .position(tempLatLng)
+                        .title(type)
+                        //.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+                        .icon(BitmapDescriptorFactory.fromBitmap(bmpGuit))
+                        .snippet(title + ": " + time + " on " + date)
+                        .anchor(0.5f, 1));
+                tempMark.setTag(lines); // Each marker carries it's descriptors*/
+            }
+            else if (type.equals("Party")) {
+                Marker tempMark = googleMap.addMarker(new MarkerOptions()
+                        .position(tempLatLng)
+                        .title(type)
+                        //.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+                        .icon(BitmapDescriptorFactory.fromBitmap(bmpHat))
+                        .snippet(title + ": " + time + " on " + date)
+                        .anchor(0.5f, 1));
+                tempMark.setTag(lines); // Each marker carries it's descriptors*/
+            }
+            else if (type.equals("Sports")) {
+                Marker tempMark = googleMap.addMarker(new MarkerOptions()
+                        .position(tempLatLng)
+                        .title(type)
+                        //.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+                        .icon(BitmapDescriptorFactory.fromBitmap(bmpHock))
+                        .snippet(title + ": " + time + " on " + date)
+                        .anchor(0.5f, 1));
+                tempMark.setTag(lines); // Each marker carries it's descriptors*/
+            }
         }
 
     }
@@ -151,7 +218,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     int getNumEvents() {
         InputStream inputStream = getResources().openRawResource(R.raw.events);
-        //System.out.println(inputStream);
 
         int i;
         int num = 0;
