@@ -18,10 +18,10 @@
 
         To get one, follow this link, follow the directions and press "Create" at the end:
 
-        https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend&keyType=CLIENT_SIDE_ANDROID&r=FE:ED:95:66:90:50:29:15:95:85:88:64:D2:DE:4B:04:F5:05:2B:01:1A%3Bcom.thememeteam.eventspot
+        https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend&keyType=CLIENT_SIDE_ANDROID&r=FE:8D:B0:5A:5A:D5:FD:50:C6:DC:0F:9C:73:A5:19:4D:87:67:3F:98%3Bcom.thememeteam.eventspoll
 
         You can also add your credentials to an existing key, using this line:
-        ED:95:66:90:50:29:15:95:85:88:64:D2:DE:4B:04:F5:05:2B:01:1A;com.thememeteam.eventspot
+        FE:8D:B0:5A:5A:D5:FD:50:C6:DC:0F:9C:73:A5:19:4D:87:67:3F:98;com.thememeteam.eventspoll
 
         Alternatively, follow the directions here:
         https://developers.google.com/maps/documentation/android/start#get-key
@@ -30,7 +30,7 @@
         string in this file.
         -->
     <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">
-         AIzaSyCyTriprOfjeF85CLtUnp7NZwUmDfwvpzI
+         AIzaSyA66uUj3Dk9xTqIAeyxi1uggbRbBvhwVoM
     </string>
 
     <string name="Create_app">Create your own event!</string>
