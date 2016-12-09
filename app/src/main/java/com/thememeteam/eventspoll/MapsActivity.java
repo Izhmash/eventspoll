@@ -23,12 +23,16 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
     //https://www.simplifiedcoding.net/android-mysql-tutorial-to-perform-basic-crud-operation/
+
+    String FILENAME = "hello_file";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +42,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()  //crash
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        getNumEvents();
+        try {
+            getNumEvents();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
@@ -132,69 +140,106 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         // Read events from text file
         // i < (numEvents + 1)
-        Toast.makeText(this, Integer.toString(getNumEvents()) + " events", Toast.LENGTH_LONG).show();
-        for (int i = 1; i < /*5*/getNumEvents() + 1; i++) {
-            lines = getEventStr(i).split("\r\n");
-
-            if (i > 1) {
-                title = lines[1];
-                type = lines[2];
-                time = lines[3];
-                date = lines[4];
-                lat = Double.parseDouble(lines[5]);
-                lng = Double.parseDouble(lines[6]);
-            }
-            else {
-                title = lines[0];
-                type = lines[1];
-                time = lines[2];
-                date = lines[3];
-                lat = Double.parseDouble(lines[4]);
-                lng = Double.parseDouble(lines[5]);
-            }
-            LatLng tempLatLng = new LatLng(lat, lng);
-
-            if (type.equals("Seminar")) {
-                Marker tempMark = googleMap.addMarker(new MarkerOptions()
-                        .position(tempLatLng)
-                        .title(type)
-                        //.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
-                        .icon(BitmapDescriptorFactory.fromBitmap(bmpBook))
-                        .snippet(title + ": " + time + " on " + date)
-                        .anchor(0.5f, 1));
-                tempMark.setTag(lines); // Each marker carries it's descriptors*/
-            }
-            else if (type.equals("Concert")) {
-                Marker tempMark = googleMap.addMarker(new MarkerOptions()
-                        .position(tempLatLng)
-                        .title(type)
-                        //.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
-                        .icon(BitmapDescriptorFactory.fromBitmap(bmpGuit))
-                        .snippet(title + ": " + time + " on " + date)
-                        .anchor(0.5f, 1));
-                tempMark.setTag(lines); // Each marker carries it's descriptors*/
-            }
-            else if (type.equals("Party")) {
-                Marker tempMark = googleMap.addMarker(new MarkerOptions()
-                        .position(tempLatLng)
-                        .title(type)
-                        //.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
-                        .icon(BitmapDescriptorFactory.fromBitmap(bmpHat))
-                        .snippet(title + ": " + time + " on " + date)
-                        .anchor(0.5f, 1));
-                tempMark.setTag(lines); // Each marker carries it's descriptors*/
-            }
-            else if (type.equals("Sports")) {
-                Marker tempMark = googleMap.addMarker(new MarkerOptions()
-                        .position(tempLatLng)
-                        .title(type)
-                        //.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
-                        .icon(BitmapDescriptorFactory.fromBitmap(bmpHock))
-                        .snippet(title + ": " + time + " on " + date)
-                        .anchor(0.5f, 1));
-                tempMark.setTag(lines); // Each marker carries it's descriptors*/
-            }
+        try {
+            Toast.makeText(this, Integer.toString(getNumEvents()) + " events", Toast.LENGTH_LONG).show();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         }
+        try {
+            for (int i = 1; i < getNumEvents() + 1; i++) {
+                lines = getEventStr(i).split("\n");
+                Toast.makeText(this, lines[0], Toast.LENGTH_LONG).show();
+                if (i > 1) {
+                    title = lines[1];
+                    type = lines[2];
+                    time = lines[3];
+                    date = lines[4];
+                    lat = Double.parseDouble(lines[5]);
+                    lng = Double.parseDouble(lines[6]);
+                }
+                else {
+                    title = lines[0];
+                    type = lines[1];
+                    time = lines[2];
+                    date = lines[3];
+                    lat = Double.parseDouble(lines[4]);
+                    lng = Double.parseDouble(lines[5]);
+                }
+                LatLng tempLatLng = new LatLng(lat, lng);
+
+                if (type.equals("Seminar")) {
+                    Marker tempMark = googleMap.addMarker(new MarkerOptions()
+                            .position(tempLatLng)
+                            .title(type)
+                            //.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+                            .icon(BitmapDescriptorFactory.fromBitmap(bmpBook))
+                            .snippet(title + ": " + time + " on " + date)
+                            .anchor(0.5f, 1));
+                    tempMark.setTag(lines); // Each marker carries it's descriptors
+                }
+                else if (type.equals("Concert")) {
+                    Marker tempMark = googleMap.addMarker(new MarkerOptions()
+                            .position(tempLatLng)
+                            .title(type)
+                            //.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+                            .icon(BitmapDescriptorFactory.fromBitmap(bmpGuit))
+                            .snippet(title + ": " + time + " on " + date)
+                            .anchor(0.5f, 1));
+                    tempMark.setTag(lines); // Each marker carries it's descriptors
+                }
+                else if (type.equals("Party")) {
+                    Marker tempMark = googleMap.addMarker(new MarkerOptions()
+                            .position(tempLatLng)
+                            .title(type)
+                            //.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+                            .icon(BitmapDescriptorFactory.fromBitmap(bmpHat))
+                            .snippet(title + ": " + time + " on " + date)
+                            .anchor(0.5f, 1));
+                    tempMark.setTag(lines); // Each marker carries it's descriptors
+                }
+                else if (type.equals("Sports")) {
+                    Marker tempMark = googleMap.addMarker(new MarkerOptions()
+                            .position(tempLatLng)
+                            .title(type)
+                            //.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+                            .icon(BitmapDescriptorFactory.fromBitmap(bmpHock))
+                            .snippet(title + ": " + time + " on " + date)
+                            .anchor(0.5f, 1));
+                    tempMark.setTag(lines); // Each marker carries it's descriptors
+                }
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        /*ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        try {
+            FileInputStream fis = openFileInput(FILENAME);
+            int i = fis.read();
+            byteArrayOutputStream.write(i);
+            Toast.makeText(this,
+                    byteArrayOutputStream.toString(),
+                    Toast.LENGTH_SHORT).show();
+            fis.close();
+            Toast.makeText(this,
+                    getEventStr(1),
+                    Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,
+                    getEventStr(2),
+                    Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,
+                    getEventStr(3),
+                    Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,
+                    getEventStr(4),
+                    Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,
+                    getEventStr(5),
+                    Toast.LENGTH_SHORT).show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }*/
+
 
     }
 
@@ -217,9 +262,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return false;
     }
 
-    int getNumEvents() {
-        InputStream inputStream = getResources().openRawResource(R.raw.events);
-
+    int getNumEvents() throws FileNotFoundException {
+        //InputStream inputStream = getResources().openRawResource(R.raw.events);
+        FileInputStream inputStream = openFileInput(FILENAME);
         int i;
         int num = 0;
         try {
@@ -241,9 +286,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     /**
      * Returns the event info for a given id
      */
-    private String getEventStr(int id) {
+    private String getEventStr(int id) throws FileNotFoundException {
 
-        InputStream inputStream = getResources().openRawResource(R.raw.events);
+        //InputStream inputStream = getResources().openRawResource(R.raw.events);
+        FileInputStream inputStream = openFileInput(FILENAME);
         System.out.println(inputStream);
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 

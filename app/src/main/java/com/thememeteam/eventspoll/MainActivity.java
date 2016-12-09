@@ -17,12 +17,56 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
+
+import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 import static com.thememeteam.eventspoll.R.layout.content_main;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    String FILENAME = "hello_file";
+    String string = "Party at Joe's house\n" +
+            "Party\n" +
+            "21:00\n" +
+            "2017/1/28\n" +
+            "42.3601\n" +
+            "-71.0589\n" +
+            "#1\n" +
+            "It's a concert!\n" +
+            "Concert\n" +
+            "18:00\n" +
+            "2017/1/28\n" +
+            "44.4905\n" +
+            "-70.1112\n" +
+            "#2\n" +
+            "ECE Seminar\n" +
+            "Seminar\n" +
+            "17:00\n" +
+            "2017/1/29\n" +
+            "45.4905\n" +
+            "-73.1112\n" +
+            "#3\n" +
+            "Hockey Game\n" +
+            "Sports\n" +
+            "18:00\n" +
+            "2017/2/3\n" +
+            "47.4905\n" +
+            "-75.1112\n" +
+            "#4\n" +
+            "Off!\n" +
+            "Concert\n" +
+            "18:00\n" +
+            "2017/1/30\n" +
+            "44.4762466\n" +
+            "-73.2103198\n" +
+            "#5";
 
     TextView textView;
     @Override
@@ -49,6 +93,32 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        /*Testing file io*/
+        int i;
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        FileOutputStream fos = null;
+        try {
+            fos = openFileOutput(FILENAME, this.MODE_PRIVATE);
+            fos.write(string.getBytes());
+            fos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            FileInputStream fis = openFileInput(FILENAME);
+            i = fis.read();
+            byteArrayOutputStream.write(i);
+            Toast.makeText(this,
+                    byteArrayOutputStream.toString(),
+                    Toast.LENGTH_SHORT).show();
+            fis.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override
