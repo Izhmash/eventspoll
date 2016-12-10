@@ -147,8 +147,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
         try {
             for (int i = 1; i < getNumEvents() + 1; i++) {
+                Toast.makeText(this, getEventStr(i), Toast.LENGTH_LONG).show();
                 lines = getEventStr(i).split("\n");
-                Toast.makeText(this, lines[0], Toast.LENGTH_LONG).show();
+                //Toast.makeText(this, lines[0], Toast.LENGTH_LONG).show();
                 if (i > 1) {
                     title = lines[1];
                     type = lines[2];

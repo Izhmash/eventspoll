@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.FragmentManager;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
@@ -188,7 +189,7 @@ public class eventspot extends AppCompatActivity {
 
             case R.id.sport:
                 if (checked)
-                    type = "Sport\n";
+                    type = "Sports\n";
                 break;
         }
     }
@@ -215,7 +216,8 @@ public class eventspot extends AppCompatActivity {
         }
 
         int i;
-        FileOutputStream fos = openFileOutput(FILENAME, this.MODE_PRIVATE);
+        FileOutputStream fos = openFileOutput(FILENAME, MODE_APPEND); // is this creating a new file?
+        //deleteFile(FILENAME); //DEBUG
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         fos.write((eventName.getText().toString() + '\n').getBytes());
 
