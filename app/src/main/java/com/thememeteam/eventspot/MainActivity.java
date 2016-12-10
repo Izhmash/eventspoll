@@ -160,11 +160,6 @@ public class MainActivity extends AppCompatActivity
                     .replace(R.id.content_frame, new CreateEventFragment())
                     .commit();
         }
-        else if (id == R.id.nav_settings) {
-            fragmentManager.beginTransaction()
-                    .replace(R.id.content_frame, new SettingsFragment())
-                    .commit();
-        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

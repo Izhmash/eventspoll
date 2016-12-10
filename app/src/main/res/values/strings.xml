@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">eventspot</string>
+    <string name="app_name">EventSpot</string>
     <string name="welcome">Spot an Event near you!</string>
     <string name="entryfield">Enter something here!</string>
     <string name="ButtonText">Click me!</string>
