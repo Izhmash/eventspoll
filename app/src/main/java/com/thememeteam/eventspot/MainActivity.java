@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -68,6 +69,7 @@ public class MainActivity extends AppCompatActivity
             "-73.2103198\n" +
             "#5";*/
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,6 +92,9 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+
+        //tvStatus = (TextView) findViewById(R.id.main_tv_connection_status);
 
         /*Testing file io*/
         /*int i;
@@ -174,6 +179,15 @@ public class MainActivity extends AppCompatActivity
     public void openMenu(View view){
         Intent intent = new Intent(this, eventspot.class);
         startActivity(intent);
+    }
+
+    public void updateTextViewFromUI(final TextView textView, final String text) {
+        MainActivity.this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                textView.setText(text);
+            }
+        });
     }
 }
 
