@@ -57,26 +57,29 @@ public class eventspot extends AppCompatActivity {
     static String type = "";
 
     EditText eventName;
+
+    static TextView time;
+    static TextView Date;
+
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
     private GoogleApiClient client;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_eventspot);
+
+        super.onCreate(savedInstanceState);
+
 
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
-
-
-        eventName =  (EditText) findViewById(R.id.editText);
-
-
+        eventName = (EditText) findViewById(R.id.editText);
+        time = (TextView)findViewById(R.id.time);
+        Date = (TextView)findViewById(R.id.date);
     }
 
     public void showTimePickerDialog(View v) {
@@ -143,6 +146,7 @@ public class eventspot extends AppCompatActivity {
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
             hour = hourOfDay;
             min = minute;
+            time.setText((Integer.toString(hour)) + ":" + (Integer.toString(min)));
         }
 
     }
@@ -166,7 +170,7 @@ public class eventspot extends AppCompatActivity {
             annee = year;
             mois = month + 1;
             jour = day;
-
+            Date.setText((Integer.toString(annee)) + "/" + (Integer.toString(mois)) + "/" + (Integer.toString(jour)));
         }
     }
 
@@ -196,6 +200,9 @@ public class eventspot extends AppCompatActivity {
 
     public void geoLocate(View v) throws IOException {
         hideSoftKeyboard(v);
+
+
+
 
         EditText et = (EditText) findViewById(R.id.editText2);
         String location = et.getText().toString();
