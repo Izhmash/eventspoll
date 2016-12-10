@@ -268,6 +268,7 @@ public class eventspot extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        onBackPressed();
     }
 
 
