@@ -242,7 +242,7 @@ public class eventspot extends AppCompatActivity {
 
         // start testing as per IanB
         ByteArrayOutputStream byteArrayOutputStream2 = new ByteArrayOutputStream();
-        try {
+        /*try {
             FileInputStream fis = openFileInput(FILENAME);
             int j = fis.read();
             byteArrayOutputStream2.write(j);
@@ -253,7 +253,7 @@ public class eventspot extends AppCompatActivity {
             Toast.makeText(this,
                     getEventStr(1),
                     Toast.LENGTH_LONG).show();
-            /*Toast.makeText(this,
+            Toast.makeText(this,
                     getEventStr(2),
                     Toast.LENGTH_SHORT).show();
             Toast.makeText(this,
@@ -264,10 +264,11 @@ public class eventspot extends AppCompatActivity {
                     Toast.LENGTH_SHORT).show();
             Toast.makeText(this,
                     getEventStr(5),
-                    Toast.LENGTH_SHORT).show();*/
+                    Toast.LENGTH_SHORT).show();
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
+        //}
         onBackPressed();
     }
 
