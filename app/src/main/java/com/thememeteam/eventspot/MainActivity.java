@@ -32,6 +32,10 @@ import static com.thememeteam.eventspot.R.layout.content_main;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    String FILENAME = "events_file";
+
+    //TextView allData;
+
     /*String FILENAME = "events_file";
     String string = "Party at Joe's house\n" +
             "Party\n" +
@@ -93,6 +97,10 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+
+        //allData = (TextView) findViewById(R.id.textView);
+
+        //updateTextViewFromUI(allData, "This are texts yarrr");
 
         //tvStatus = (TextView) findViewById(R.id.main_tv_connection_status);
 
@@ -189,5 +197,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
     }
+
+
 }
 
