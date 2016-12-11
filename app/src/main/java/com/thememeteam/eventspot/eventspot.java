@@ -127,7 +127,10 @@ public class eventspot extends AppCompatActivity {
         client.disconnect();
     }
 
-
+    /**
+     * Fragment class for TimePicker.  Controls how the picker is
+     * created and also where the data goes.
+     */
     public static class TimePickerFragment extends DialogFragment
             implements TimePickerDialog.OnTimeSetListener {
 
@@ -151,6 +154,10 @@ public class eventspot extends AppCompatActivity {
 
     }
 
+    /**
+     * Fragment class for DatePicker.  Controls how the picker is
+     * created and also where the data goes.
+     */
     public static class DatePickerFragment extends DialogFragment
             implements DatePickerDialog.OnDateSetListener {
 
@@ -174,6 +181,10 @@ public class eventspot extends AppCompatActivity {
         }
     }
 
+    /**
+     * Determines the data sent from the event selection radio buttons
+     * @param view
+     */
     public void onRadioButtonClicked(View view){
         boolean checked = ((RadioButton) view).isChecked();
         switch(view.getId()) {
@@ -198,11 +209,15 @@ public class eventspot extends AppCompatActivity {
         }
     }
 
+    /**
+     * Called when the event create button is pressed.
+     * Writes all data to file and finds the lat & lng coords
+     * for the input address
+     * @param v
+     * @throws IOException
+     */
     public void geoLocate(View v) throws IOException {
         hideSoftKeyboard(v);
-
-
-
 
         EditText et = (EditText) findViewById(R.id.editText2);
         String location = et.getText().toString();
@@ -217,12 +232,16 @@ public class eventspot extends AppCompatActivity {
 
             latitude= addresses.get(0).getLatitude();
             longitude= addresses.get(0).getLongitude();
+            // To test lat and lng creation
             //Toast.makeText(this,Double.toString(latitude) , Toast.LENGTH_SHORT).show();
             //Toast.makeText(this,Double.toString(longitude) , Toast.LENGTH_SHORT).show();
             Toast.makeText(this,"Event Created!" , Toast.LENGTH_SHORT).show();
         }
 
         int i;
+
+        // Write new event to file
+
         FileOutputStream fos = openFileOutput(FILENAME, MODE_APPEND); // is this creating a new file?
         //deleteFile(FILENAME); //DEBUG
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -249,6 +268,8 @@ public class eventspot extends AppCompatActivity {
 
         // start testing as per IanB
         ByteArrayOutputStream byteArrayOutputStream2 = new ByteArrayOutputStream();
+
+        // For testing if events were added to the file correctly
         /*try {
             FileInputStream fis = openFileInput(FILENAME);
             int j = fis.read();
@@ -279,47 +300,15 @@ public class eventspot extends AppCompatActivity {
         onBackPressed();
     }
 
-
     private void hideSoftKeyboard(View v) {
         InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
     }
 
     /**
-     * Returns the event info for a given id
+     * Looks for pound-symbols <#> in the data and increment the
+     * number of events.  Returns the number of events
      */
-    private String getEventStr(int id) throws FileNotFoundException {
-
-        //InputStream inputStream = getResources().openRawResource(R.raw.events);
-        FileInputStream inputStream = openFileInput(FILENAME);
-        System.out.println(inputStream);
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-
-        int i;
-        try {
-            i = inputStream.read();
-            while (i != -1) {
-                byteArrayOutputStream.write(i);
-                i = inputStream.read();
-                if (i == '#') {
-                    i = inputStream.read();
-                    if (Character.getNumericValue(i) == id) {
-                        break;
-                    } else {
-                        byteArrayOutputStream.reset();
-                        i = inputStream.read();
-                    }
-                }
-            }
-            inputStream.close();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-        return byteArrayOutputStream.toString();
-    }
-
     int getNumEvents() throws FileNotFoundException {
         //InputStream inputStream = getResources().openRawResource(R.raw.events);
         FileInputStream inputStream = openFileInput(FILENAME);
@@ -340,5 +329,4 @@ public class eventspot extends AppCompatActivity {
         }
         return num;
     }
-
 }

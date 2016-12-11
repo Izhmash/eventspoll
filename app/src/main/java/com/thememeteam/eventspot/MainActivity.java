@@ -34,8 +34,7 @@ public class MainActivity extends AppCompatActivity
 
     String FILENAME = "events_file";
 
-    //TextView allData;
-
+    // Example of how data in file might look
     /*String FILENAME = "events_file";
     String string = "Party at Joe's house\n" +
             "Party\n" +
@@ -50,28 +49,7 @@ public class MainActivity extends AppCompatActivity
             "2017/1/28\n" +
             "44.4905\n" +
             "-70.1112\n" +
-            "#2\n" +
-            "ECE Seminar\n" +
-            "Seminar\n" +
-            "17:00\n" +
-            "2017/1/29\n" +
-            "45.4905\n" +
-            "-73.1112\n" +
-            "#3\n" +
-            "Hockey Game\n" +
-            "Sports\n" +
-            "18:00\n" +
-            "2017/2/3\n" +
-            "47.4905\n" +
-            "-75.1112\n" +
-            "#4\n" +
-            "Off!\n" +
-            "Concert\n" +
-            "18:00\n" +
-            "2017/1/30\n" +
-            "44.4762466\n" +
-            "-73.2103198\n" +
-            "#5";*/
+            "#2";*/
 
 
     @Override
@@ -96,13 +74,6 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-
-        //allData = (TextView) findViewById(R.id.textView);
-
-        //updateTextViewFromUI(allData, "This are texts yarrr");
-
-        //tvStatus = (TextView) findViewById(R.id.main_tv_connection_status);
 
         /*Testing file io*/
         /*int i;
@@ -148,6 +119,7 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    // Controls the design flow of the sidebar
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -179,6 +151,7 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    // Called when maps button is pressed
     public void openMaps(View view) {
         Intent intent = new Intent(this, MapsActivity.class);
         startActivity(intent);
@@ -189,6 +162,7 @@ public class MainActivity extends AppCompatActivity
         startActivity(intent);
     }
 
+    // Utility for easily updating text from the UI
     public void updateTextViewFromUI(final TextView textView, final String text) {
         MainActivity.this.runOnUiThread(new Runnable() {
             @Override
@@ -197,7 +171,5 @@ public class MainActivity extends AppCompatActivity
             }
         });
     }
-
-
 }
 

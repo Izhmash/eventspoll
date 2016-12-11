@@ -14,6 +14,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -50,6 +51,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
+    // Required to get location permissions
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
         switch (requestCode) {
             case 1: {
@@ -80,16 +82,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
-        /*BitmapFactory.Options opts = new BitmapFactory.Options();
-        opts.inSampleSize = 4;
-        Bitmap newBitmap = BitmapFactory.decodeFile(R.drawable.books_48, opts);*/
 
+        // Ready bitmaps for each event icon
         Bitmap.Config conf = Bitmap.Config.ARGB_8888;
         Bitmap bmpBook = Bitmap.createBitmap(170, 170, conf);
         Bitmap bmpHat = Bitmap.createBitmap(170, 170, conf);
         Bitmap bmpGuit = Bitmap.createBitmap(170, 170, conf);
         Bitmap bmpHock = Bitmap.createBitmap(170, 170, conf);
 
+        // Ready canvases for each event icon
         Canvas canvasBook = new Canvas(bmpBook);
         Canvas canvasHat = new Canvas(bmpHat);
         Canvas canvasGuit = new Canvas(bmpGuit);
@@ -110,6 +111,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         canvasHock.drawBitmap(BitmapFactory.decodeResource(getResources(),
                 R.drawable.hockey_48), 0,0, color);
 
+        // Check if location can be accessed
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             googleMap.setMyLocationEnabled(true);
@@ -119,17 +121,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
         // Add a marker in Boston and move the camera
-        //LatLng boston = new LatLng(42.3601, -71.0589);
-        /*Marker mBoston = googleMap.addMarker(new MarkerOptions()
-                .position(boston)
-                .title("Marker in Boston")
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
-                .snippet("This marker is blue!"));
-        mBoston.setTag(0);*/
+        LatLng boston = new LatLng(42.3601, -71.0589);
         googleMap.setOnMarkerClickListener(this);
 
-        //googleMap.moveCamera(CameraUpdateFactory.newLatLng(boston));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(boston));
 
+        // Setup variables for event file parsing
         String lines[];
         String title;
         String type;
@@ -137,7 +134,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         String date;
         double lat;
         double lng;
-        //Marker events[];
 
         // Read events from text file
         // i < (numEvents + 1)
@@ -147,11 +143,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             e.printStackTrace();
         }
         try {
-            for (int i = 1; i < getNumEvents() + 1; i++) {
-                //Toast.makeText(this, getEventStr(i), Toast.LENGTH_LONG).show();
+            for (int i = 1; i < getNumEvents() + 1; i++) { // Loop through IDs and grab data
                 lines = getEventStr(i).split("\n");
-                //Toast.makeText(this, lines[0], Toast.LENGTH_LONG).show();
-                if (i > 1) {
+                if (i > 1) { // if statement deals with \n parsing
                     title = lines[1];
                     type = lines[2];
                     time = lines[3];
@@ -169,12 +163,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 }
                 LatLng tempLatLng = new LatLng(lat, lng);
 
+                // Create a marker determined by the type of event
+
                 if (type.equals("Seminar")) {
                     Marker tempMark = googleMap.addMarker(new MarkerOptions()
                             .position(tempLatLng)
                             .title(type)
-                            //.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
-                            .icon(BitmapDescriptorFactory.fromBitmap(bmpBook))
+                            .icon(BitmapDescriptorFactory.fromBitmap(bmpBook)) // Personal icon
                             .snippet(title + ": " + time + " on " + date)
                             .anchor(0.5f, 1));
                     tempMark.setTag(lines); // Each marker carries it's descriptors
@@ -183,7 +178,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     Marker tempMark = googleMap.addMarker(new MarkerOptions()
                             .position(tempLatLng)
                             .title(type)
-                            //.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
                             .icon(BitmapDescriptorFactory.fromBitmap(bmpGuit))
                             .snippet(title + ": " + time + " on " + date)
                             .anchor(0.5f, 1));
@@ -193,7 +187,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     Marker tempMark = googleMap.addMarker(new MarkerOptions()
                             .position(tempLatLng)
                             .title(type)
-                            //.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
                             .icon(BitmapDescriptorFactory.fromBitmap(bmpHat))
                             .snippet(title + ": " + time + " on " + date)
                             .anchor(0.5f, 1));
@@ -213,36 +206,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-
-        /*ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        try {
-            FileInputStream fis = openFileInput(FILENAME);
-            int i = fis.read();
-            byteArrayOutputStream.write(i);
-            Toast.makeText(this,
-                    byteArrayOutputStream.toString(),
-                    Toast.LENGTH_SHORT).show();
-            fis.close();
-            Toast.makeText(this,
-                    getEventStr(1),
-                    Toast.LENGTH_SHORT).show();
-            Toast.makeText(this,
-                    getEventStr(2),
-                    Toast.LENGTH_SHORT).show();
-            Toast.makeText(this,
-                    getEventStr(3),
-                    Toast.LENGTH_SHORT).show();
-            Toast.makeText(this,
-                    getEventStr(4),
-                    Toast.LENGTH_SHORT).show();
-            Toast.makeText(this,
-                    getEventStr(5),
-                    Toast.LENGTH_SHORT).show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
-
-
     }
 
     /**
@@ -251,8 +214,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public boolean onMarkerClick(final Marker marker) {
 
-
-
+        // Pop up the party type in a temporary notification
         Toast.makeText(this,
                 marker.getTitle(),
                 Toast.LENGTH_SHORT).show();
@@ -264,9 +226,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return false;
     }
 
+
+    /**
+     * Looks for pound-symbols <#> in the data and increment the
+     * number of events.  Returns the number of events
+     */
     int getNumEvents() throws FileNotFoundException {
-        //InputStream inputStream = getResources().openRawResource(R.raw.events);
-        FileInputStream inputStream = openFileInput(FILENAME);
+        FileInputStream inputStream = openFileInput(FILENAME); // Internal events file
         int i;
         int num = 0;
         try {
@@ -279,7 +245,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
             inputStream.close();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return num;
@@ -290,9 +255,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      */
     private String getEventStr(int id) throws FileNotFoundException {
 
-        //InputStream inputStream = getResources().openRawResource(R.raw.events);
         FileInputStream inputStream = openFileInput(FILENAME);
         System.out.println(inputStream);
+
+        // For formatting to String
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
         int i;
@@ -313,7 +279,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
             inputStream.close();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
